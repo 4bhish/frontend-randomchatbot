@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://backend-randomchat.ap-south-1.elasticbeanstalk.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
