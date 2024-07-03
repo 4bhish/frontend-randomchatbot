@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import './App.css';
 import { IoMdSend } from "react-icons/io";
+import axios from 'axios';
 import { api } from './api';
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
       try {
         const response = await api.get('/random-response');
         const botResponse = response.data.response;
-
+        console.log(response)
         const newMessageFromUser = {
           text: userInput,
           side: "right"
