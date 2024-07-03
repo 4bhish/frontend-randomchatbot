@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import './App.css';
 import { IoMdSend } from "react-icons/io";
-import axios from 'axios';
-import { api } from './api';
+import { fakeFetch } from './fakeFetch';
 
 function App() {
   const [userInput, setUserInput] = useState('');
@@ -25,22 +24,25 @@ function App() {
       setEmptyInput(true);
     } else {
       try {
-        const response = await api.get('/random-response');
-        const botResponse = response.data.response;
-        console.log(response)
         const newMessageFromUser = {
           text: userInput,
           side: "right"
         };
+
+        setMessages(prevMessages => [...prevMessages, newMessageFromUser]); // Update with user's message first
+        setUserInput('');
+        const response = await fakeFetch('/random-response');
+        const botResponse = response.response;
 
         const newBotResponse = {
           text: botResponse,
           side: "left"
         };
 
-        setMessages(prevMessages => [...prevMessages, newMessageFromUser, newBotResponse]);
+        // Update with bot's response after fetch call
+        setMessages(prevMessages => [...prevMessages, newBotResponse]);
 
-        setUserInput('');
+
         setEmptyInput(false);
         scrollToBottom();
       } catch (error) {
@@ -48,6 +50,7 @@ function App() {
       }
     }
   };
+
 
   const scrollToBottom = () => {
     if (chatBottomRef.current) {
