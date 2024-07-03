@@ -21,30 +21,35 @@ function App() {
 
   const inputHandler = async (e) => {
     e.preventDefault();
-    if (!userInput.trim()) setEmptyInput(true)
-    if (!userInput.trim()) return;
-    try {
-      const response = await api.get('/random-response');
-      const botResponse = response.data.response;
+    if (!userInput.trim()) {
+      setEmptyInput(true)
+    } else{
 
-      const newMessageFromUser = {
-        text: userInput,
-        side: "right"
-      };
 
-      const newBotResponse = {
-        text: botResponse,
-        side: "left"
-      };
+      try {
+        const response = await api.get('/random-response');
+        const botResponse = response.data.response;
+  
+        const newMessageFromUser = {
+          text: userInput,
+          side: "right"
+        };
+  
+        const newBotResponse = {
+          text: botResponse,
+          side: "left"
+        };
+  
+        setMessages(prevMessages => [...prevMessages, newMessageFromUser, newBotResponse]);
+  
+        setUserInput('');
+        setEmptyInput(false)
+      } catch (error) {
+        console.error('Api error: ', error);
+      }
 
-      setMessages(prevMessages => [...prevMessages, newMessageFromUser, newBotResponse]);
-
-      setUserInput('');
-      setEmptyInput(false)
-    } catch (error) {
-      console.error('Api error: ', error);
     }
-
+  
   }
 
   useEffect(() => {
